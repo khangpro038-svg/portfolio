@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lê Nguyên Khang (Dory) | Physics & Semiconductor Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#060911',
+                            card: '#0d1526',
+                            border: '#1e293b',
+                            cyan: '#22d3ee',
+                            gold: '#fde047',
+                            violet: '#a78bfa',
+                            emerald: '#34d399'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Be Vietnam Pro"', 'Inter', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', '"Fira Code"', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Custom Styling & Glassmorphism */
+        body {
+            background-color: #060911;
+            color: #f8fafc;
+            font-family: 'Be Vietnam Pro', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Subtle Cyber Grid Background */
+        .bg-cyber-grid {
+            background-image: 
+                linear-gradient(to right, rgba(34, 211, 238, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Glassmorphism Card Effect */
+        .glass-card {
+            background: rgba(13, 21, 38, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(34, 211, 238, 0.3);
+            box-shadow: 0 10px 40px -10px rgba(34, 211, 238, 0.15);
+        }
+
+        /* Glowing Border Accent */
+        .glow-border-cyan {
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.25);
+        }
+
+        .glow-border-gold {
+            box-shadow: 0 0 15px rgba(253, 224, 71, 0.25);
+        }
+
+        /* Vinyl Disc Rotation & Arm Animation */
+        @keyframes vinylSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .vinyl-spinning {
+            animation: vinylSpin 6s linear infinite;
+        }
+
+        .vinyl-paused {
+            animation-play-state: paused;
+        }
+
+        .tonearm {
+            transform-origin: 20px 20px;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tonearm-playing {
+            transform: rotate(26deg);
+        }
+
+        /* Equalizer Soundbars Animation */
+        @keyframes eqBar {
+            0%, 100% { height: 4px; }
+            50% { height: 20px; }
+        }
+
+        .eq-bar-1 { animation: eqBar 0.8s ease-in-out infinite; }
+        .eq-bar-2 { animation: eqBar 0.6s ease-in-out infinite 0.2s; }
+        .eq-bar-3 { animation: eqBar 1.1s ease-in-out infinite 0.4s; }
+        .eq-bar-4 { animation: eqBar 0.7s ease-in-out infinite 0.1s; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #060911;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #22d3ee;
+        }
+
+        /* Terminal Prompt Blink */
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Active Section Highlight Flash */
+        .section-illuminated {
+            animation: sectionPulse 1.2s ease-out;
+        }
+        @keyframes sectionPulse {
+            0% { border-color: rgba(253, 224, 71, 0.8); box-shadow: 0 0 30px rgba(253, 224, 71, 0.3); }
+            100% { border-color: rgba(255, 255, 255, 0.08); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
+        }
+    </style>
+</head>
+<body class="bg-cyber-grid min-h-screen text-slate-100 selection:bg-cyan-500 selection:text-black">
+
+    <!-- FULLSCREEN FIREFLY SWARM CANVAS OVERLAY -->
+    <canvas id="fireflyCanvas" class="fixed inset-0 pointer-events-none z-40 w-full h-full"></canvas>
+
+    <!-- FLOATING HUD / SWARM STATUS CONTROL BAR -->
+    <div class="fixed bottom-4 left-4 z-50 flex items-center gap-2 bg-slate-900/90 border border-slate-800 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-mono text-slate-300 shadow-2xl">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="swarmStatusText">FIREFLY SWARM :: ACTIVE</span>
+        <button id="hudColorBtn" onclick="toggleFireflyPalette()" class="ml-2 px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-cyan-400 transition hover:scale-105 active:scale-95" title="Đổi màu đom đóm">
+            <i class="fa-solid fa-palette mr-1"></i><span id="paletteLabel">Đa Sắc</span>
+        </button>
+    </div>
+
+    <!-- MAIN WRAPPER -->
+    <div class="max-w-5xl mx-auto px-4 py-6 relative z-10 space-y-12">
+
+        <!-- HEADER / NAVIGATION BAR -->
+        <header class="glass-card rounded-2xl px-5 py-4 flex flex-wrap items-center justify-between gap-4 sticky top-4 z-30">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center font-extrabold text-black text-lg shadow-lg shadow-cyan-500/20">
+                    D
+                </div>
+                <div>
+                    <span class="font-bold font-mono text-cyan-400 text-base tracking-wide">dory</span>
+                    <span class="text-xs font-mono text-slate-400">@lqdon-vt</span>
+                </div>
+            </div>
+
+            <!-- Nav Controls -->
+            <div class="flex items-center gap-2">
+                <button onclick="triggerSwarmRebuild()" class="px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 font-mono text-xs flex items-center gap-2 transition hover:scale-105 active:scale-95">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                    <span>+ Swarm</span>
+                </button>
+                <button onclick="toggleTerminalModal()" class="px-3 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-300 font-mono text-xs flex items-center gap-2 transition hover:scale-105 active:scale-95">
+                    <i class="fa-solid fa-terminal"></i>
+                    <span>>_ CLI Mode</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- HERO TERMINAL CARD -->
+        <section id="hero" class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden transition-all">
+            <!-- Terminal Header Controls -->
+            <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-800 font-mono text-xs text-slate-400">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+                    <span class="ml-2 text-slate-400 hidden sm:inline">dory@lqdon-vt: ~ (10 Lý 2) UTF-8</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded bg-cyan-950 text-cyan-400 border border-cyan-800/50">SYSTEM::READY</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <!-- Avatar & Interactive Profile -->
+                <div class="md:col-span-4 flex flex-col items-center text-center">
+                    <div class="relative group cursor-pointer" onclick="document.getElementById('avatarInput').click()" title="Bấm để chọn ảnh đại diện mới">
+                        <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-cyan-500 via-purple-500 to-amber-400 opacity-75 blur transition duration-500 group-hover:opacity-100 animate-pulse"></div>
+                        <div class="relative w-28 h-28 sm:w-36 sm:h-36 rounded-2xl overflow-hidden border-2 border-cyan-400/50 bg-slate-950 flex items-center justify-center">
+                            <img id="avatarImage" src="image_f46769.jpg" alt="Lê Nguyên Khang (Dory)" class="w-full h-full object-cover transition duration-300 group-hover:scale-105" onerror="handleAvatarError(this)" />
+                            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center text-xs text-cyan-300 font-mono">
+                                <i class="fa-solid fa-camera text-lg mb-1"></i>
+                                Đổi ảnh
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Hidden File Input for Avatar Upload -->
+                    <input type="file" id="avatarInput" accept="image/*" class="hidden" onchange="loadCustomAvatar(event)">
+
+                    <div class="mt-4 flex items-center gap-2">
+                        <span class="px-3 py-1 rounded-full bg-amber-400/10 text-amber-300 border border-amber-400/30 text-xs font-mono font-semibold">
+                            ✦ Biệt danh: Dory
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Main Info Terminal Content -->
+                <div class="md:col-span-8 space-y-4">
+                    <div class="font-mono text-xs text-cyan-400 flex items-center gap-2">
+                        <span>visitor@dory:~$</span>
+                        <span class="text-slate-300">whoami --details</span>
+                    </div>
+
+                    <div>
+                        <h1 id="scrambleTitle" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
+                            Lê Nguyên Khang
+                        </h1>
+                        <p class="mt-2 text-slate-300 text-sm sm:text-base font-medium">
+                            Học sinh Chuyên Lý <span class="text-cyan-400 font-mono font-bold">(Lớp 10 Lý 2)</span> — THPT Chuyên Lê Quý Đôn, Bà Rịa - Vũng Tàu
+                        </p>
+                    </div>
+
+                    <!-- Quote Slogan -->
+                    <div class="p-3.5 rounded-xl bg-slate-900/90 border-l-4 border-cyan-400 text-slate-300 text-xs sm:text-sm italic font-mono">
+                        "Tư duy Vật Lý, định hướng Vi mạch — Just keep swimming, just keep solving."
+                    </div>
+
+                    <!-- Quick Spec Badges -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                        <div class="p-3 rounded-xl bg-slate-900/50 border border-slate-800">
+                            <div class="text-xs font-mono text-slate-400 mb-1"><i class="fa-solid fa-graduation-cap text-cyan-400 mr-1.5"></i>TRƯỜNG LỚP</div>
+                            <div class="text-xs font-semibold text-slate-200">10 Lý 2 • LQĐ VT</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-900/50 border border-slate-800">
+                            <div class="text-xs font-mono text-slate-400 mb-1"><i class="fa-solid fa-microchip text-amber-400 mr-1.5"></i>ĐỊNH HƯỚNG</div>
+                            <div class="text-xs font-semibold text-slate-200">Vi mạch Bán dẫn (HCMUT)</div>
+                        </div>
+                        <div class="p-3 rounded-xl bg-slate-900/50 border border-slate-800">
+                            <div class="text-xs font-mono text-slate-400 mb-1"><i class="fa-solid fa-cubes text-purple-400 mr-1.5"></i>ĐAM MÊ & SKILL</div>
+                            <div class="text-xs font-semibold text-slate-200">Vật Lý • Rubik 3x3 (PLL)</div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <a href="#contact" class="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-xs sm:text-sm transition shadow-lg shadow-cyan-500/20 flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Kết nối với mình</span>
+                        </a>
+                        <a href="#music" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs sm:text-sm font-semibold transition flex items-center gap-2">
+                            <i class="fa-solid fa-compact-disc text-amber-400 animate-spin" style="animation-duration: 8s;"></i>
+                            <span>Nghe nhạc cùng Dory</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mini Terminal Prompt Bar -->
+            <div class="mt-8 pt-4 border-t border-slate-800/80">
+                <div class="flex items-center gap-2 text-xs font-mono mb-2 text-slate-400">
+                    <span class="text-cyan-400">&gt;</span>
+                    <span>Thử nhấp lệnh nhanh:</span>
+                </div>
+                <div class="flex flex-wrap gap-2 text-xs font-mono">
+                    <button onclick="runCommand('neofetch')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700">neofetch</button>
+                    <button onclick="runCommand('rubik')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-purple-300 border border-slate-700">rubik</button>
+                    <button onclick="runCommand('music')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700">music</button>
+                    <button onclick="runCommand('swarm')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700">swarm</button>
+                    <button onclick="runCommand('contact')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-pink-300 border border-slate-700">contact</button>
+                    <button onclick="runCommand('clear')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-400 border border-slate-700">clear</button>
+                </div>
+                <div id="inlineTerminalOutput" class="mt-3 p-3 rounded-xl bg-slate-950 font-mono text-xs text-emerald-400 border border-slate-800 min-h-[60px] hidden whitespace-pre-wrap"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 1: ABOUT ME / SPECS -->
+        <section id="about" class="glass-card rounded-3xl p-6 sm:p-8 transition-all">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                    <i class="fa-solid fa-user-astronaut text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-mono text-cyan-400 font-semibold tracking-wider">EXP 01 // INTRODUCTION</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white">Về Bản Thân</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs sm:text-sm">
+                <!-- System Input -->
+                <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 space-y-3">
+                    <div class="text-cyan-400 font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        <span>INPUT :: THÔNG TIN THỰC THỂ</span>
+                    </div>
+                    <p class="text-slate-300 leading-relaxed font-sans">
+                        Một học sinh lớp 10 Chuyên Lý tại thành phố biển Vũng Tàu, mang trong mình sự tò mò lớn về quy luật tự nhiên, thế giới công nghệ vi mạch và những giai điệu âm nhạc cuốn hút.
+                    </p>
+                </div>
+
+                <!-- System Output -->
+                <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 space-y-3">
+                    <div class="text-purple-400 font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span>OUTPUT :: MỤC TIÊU & ĐỊNH HƯỚNG</span>
+                    </div>
+                    <p class="text-slate-300 leading-relaxed font-sans">
+                        Tập trung rèn luyện tư duy logic Vật Lý, xây dựng nền tảng khoa học vững chắc và chuẩn bị hành trang chinh phục ngành <span class="text-amber-300 font-medium">Kỹ thuật Bán dẫn & Thiết kế Vi mạch</span> tại Đại học Bách Khoa TP.HCM (HCMUT).
+                    </p>
+                </div>
+            </div>
+
+            <!-- Physics Spec Grid -->
+            <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                <div class="p-3.5 rounded-xl bg-slate-900/40 border border-slate-800/60">
+                    <div class="text-xs font-mono text-slate-400">CHUYÊN NGHÀNH</div>
+                    <div class="text-sm font-bold text-cyan-400 mt-1">Vật Lý Class</div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-900/40 border border-slate-800/60">
+                    <div class="text-xs font-mono text-slate-400">TẬP TRUNG</div>
+                    <div class="text-sm font-bold text-amber-300 mt-1">Bán Dẫn / Vi Mạch</div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-900/40 border border-slate-800/60">
+                    <div class="text-xs font-mono text-slate-400">SỞ THÍCH</div>
+                    <div class="text-sm font-bold text-purple-400 mt-1">Rubik & Music</div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-slate-900/40 border border-slate-800/60">
+                    <div class="text-xs font-mono text-slate-400">TRẠNG THÁI</div>
+                    <div class="text-sm font-bold text-emerald-400 mt-1">Active / Locked In</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: DUAL CORE - PHYSICS & RUBIK -->
+        <section id="mindset" class="glass-card rounded-3xl p-6 sm:p-8 transition-all">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                    <i class="fa-solid fa-brain text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-mono text-purple-400 font-semibold tracking-wider">EXP 02 // DUAL CORE</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white">Tư Duy & Đam Mê</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Core 1: Physics & Microchips -->
+                <div class="p-6 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-cyan-500/40 transition">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-mono text-cyan-400 font-bold px-2.5 py-1 rounded bg-cyan-950 border border-cyan-800">CORE 01 // PHYSICS & TECH</span>
+                        <i class="fa-solid fa-atom text-cyan-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Tư Duy Vật Lý & Công Nghệ Vi Mạch</h3>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                        Học sinh chuyên Vật Lý với niềm khao khát khám phá nguyên lý hoạt động của tự nhiên và thế giới linh kiện bán dẫn. Tập trung phát triển tư duy mô hình hóa, phân tích bài toán phức tạp và định hướng dài hạn vào ngành Kỹ thuật Bán dẫn.
+                    </p>
+                </div>
+
+                <!-- Core 2: Rubik 3x3 Scrambler & Interactive Timer -->
+                <div class="p-6 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-purple-500/40 transition">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-mono text-purple-400 font-bold px-2.5 py-1 rounded bg-purple-950 border border-purple-800">CORE 02 // RUBIK 3x3 TIMER</span>
+                        <i class="fa-solid fa-cube text-purple-400 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Tốc Độ & Phản Xạ — Rubik 3x3</h3>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">
+                        Đam mê giải Rubik 3x3 tốc độ, rèn luyện tư duy không gian và ghi nhớ toàn bộ công thức PLL. Thử giải scramble bên dưới!
+                    </p>
+
+                    <!-- Mini Rubik Widget -->
+                    <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 font-mono text-center">
+                        <div class="text-xs text-slate-400 mb-1">Official WCA 3x3 Scramble:</div>
+                        <div id="scrambleDisplay" class="text-amber-300 text-xs font-bold tracking-wide break-words mb-3">
+                            R U2 F' D L2 B R2 U' F2 D2 L B2 R U2 F2 L' F'
+                        </div>
+                        
+                        <div class="flex items-center justify-center gap-4 my-2">
+                            <div id="timerDisplay" class="text-3xl font-extrabold text-cyan-400">00.00s</div>
+                        </div>
+
+                        <div class="mt-3 flex items-center justify-center gap-2">
+                            <button onclick="generateNewScramble()" class="px-3 py-1.5 rounded bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition">
+                                <i class="fa-solid fa-arrows-rotate mr-1"></i>Tạo Scramble mới
+                            </button>
+                            <button id="timerToggleBtn" onclick="toggleTimer()" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-bold border border-slate-700 transition">
+                                <i class="fa-solid fa-stopwatch mr-1"></i><span id="timerBtnText">Start / Stop (Bấm cách)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: SOUNDTRACK - SPINNING VINYL MUSIC PLAYER -->
+        <section id="music" class="glass-card rounded-3xl p-6 sm:p-8 transition-all">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                    <i class="fa-solid fa-music text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-mono text-amber-400 font-semibold tracking-wider">EXP 03 // SOUNDTRACK</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white">Góc Nhạc Của Dory</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-slate-950/80 rounded-2xl p-6 border border-slate-800">
+                
+                <!-- Vinyl Player Record Section -->
+                <div class="md:col-span-5 flex flex-col items-center justify-center relative py-4">
+                    <!-- Turntable Base -->
+                    <div class="relative w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-slate-900 border-4 border-slate-800 shadow-2xl flex items-center justify-center p-2">
+                        
+                        <!-- Spinning Vinyl Disc -->
+                        <div id="vinylDisc" class="w-full h-full rounded-full bg-gradient-to-tr from-black via-slate-900 to-black relative shadow-2xl flex items-center justify-center vinyl-spinning vinyl-paused border-2 border-slate-800 overflow-hidden">
+                            <!-- Grooves Pattern -->
+                            <div class="absolute inset-2 rounded-full border border-slate-800/80 pointer-events-none"></div>
+                            <div class="absolute inset-5 rounded-full border border-slate-800/60 pointer-events-none"></div>
+                            <div class="absolute inset-8 rounded-full border border-slate-800/40 pointer-events-none"></div>
+                            <div class="absolute inset-12 rounded-full border border-slate-800/30 pointer-events-none"></div>
+
+                            <!-- Disc Artwork Center -->
+                            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-4 border-slate-900 shadow-inner relative z-10">
+                                <img src="image_f463a3.png" alt="Tấm Lòng Cửu Long MV Artwork" class="w-full h-full object-cover" onerror="this.src='https://img.youtube.com/vi/dcXw-Spt3z0/hqdefault.jpg'" />
+                            </div>
+
+                            <!-- Metallic Center Hole -->
+                            <div class="absolute w-4 h-4 rounded-full bg-slate-300 border-2 border-slate-900 z-20 shadow-md"></div>
+                        </div>
+
+                        <!-- Turntable Tonearm -->
+                        <div id="tonearm" class="tonearm absolute -top-3 -right-2 w-16 h-28 pointer-events-none z-30">
+                            <!-- Arm Body -->
+                            <div class="w-1.5 h-20 bg-slate-400 rounded-full ml-6 shadow-md transform rotate-12"></div>
+                            <div class="w-4 h-4 rounded-full bg-slate-600 border-2 border-slate-300 absolute top-0 right-4"></div>
+                            <div class="w-3 h-5 bg-cyan-400 rounded-sm absolute bottom-4 left-4 shadow-lg shadow-cyan-400/50"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Song Info & Player Controls -->
+                <div class="md:col-span-7 space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2.5 py-0.5 rounded-full bg-amber-400/10 text-amber-300 border border-amber-400/30 text-xs font-mono font-semibold">
+                            NOW PLAYING
+                        </span>
+                        <div id="equalizer" class="flex items-end gap-1 h-5 opacity-40">
+                            <span class="w-1 bg-amber-400 rounded-full eq-bar-1"></span>
+                            <span class="w-1 bg-amber-400 rounded-full eq-bar-2"></span>
+                            <span class="w-1 bg-amber-400 rounded-full eq-bar-3"></span>
+                            <span class="w-1 bg-amber-400 rounded-full eq-bar-4"></span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-white tracking-wide">Tấm Lòng Cửu Long</h3>
+                        <p class="text-slate-400 font-mono text-sm mt-1">Nghệ sĩ: <span class="text-cyan-400 font-semibold">Ricky Star</span></p>
+                    </div>
+
+                    <!-- Audio Controls Bar -->
+                    <div class="pt-2 space-y-3">
+                        <div class="flex items-center gap-4">
+                            <!-- Play/Pause Button -->
+                            <button id="playBtn" onclick="togglePlayMusic()" class="w-12 h-12 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black flex items-center justify-center font-bold text-lg shadow-lg shadow-amber-400/20 transition hover:scale-105 active:scale-95">
+                                <i id="playIcon" class="fa-solid fa-play ml-0.5"></i>
+                            </button>
+
+                            <!-- Track Info Text Status -->
+                            <div class="text-xs font-mono text-slate-400">
+                                <div id="musicStatusText" class="text-slate-200 font-semibold">Bấm Play để phát nhạc</div>
+                                <div class="text-slate-500">YouTube Audio Stream Sync</div>
+                            </div>
+                        </div>
+
+                        <!-- Extra Links -->
+                        <div class="pt-2 flex items-center gap-3">
+                            <a href="https://www.youtube.com/watch?v=dcXw-Spt3z0" target="_blank" rel="noopener noreferrer" class="text-xs font-mono text-slate-400 hover:text-amber-300 transition flex items-center gap-1">
+                                <i class="fa-brands fa-youtube text-red-500"></i> Xem MV trên YouTube
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Hidden YouTube Player Container -->
+                    <div class="hidden">
+                        <div id="ytAudioPlayer"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: CONTACT / CONNECT -->
+        <section id="contact" class="glass-card rounded-3xl p-6 sm:p-8 transition-all">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <i class="fa-solid fa-paper-plane text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-mono text-emerald-400 font-semibold tracking-wider">EXP 04 // SIGNAL</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-white">Kết Nối Với Mình</h2>
+                </div>
+            </div>
+
+            <p class="text-slate-300 text-xs sm:text-sm mb-6">
+                Sẵn sàng trao đổi về Vật Lý, định hướng Vi mạch, giao lưu Rubik 3x3 hoặc đơn giản là kết bạn làm quen!
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Email Contact Card -->
+                <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-cyan-500/40 transition flex items-center justify-between group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-mono text-slate-400">EMAIL</div>
+                            <div class="text-xs sm:text-sm font-bold text-slate-200 group-hover:text-cyan-400 transition">khangpro038@gmail.com</div>
+                        </div>
+                    </div>
+                    <button onclick="copyToClipboard('khangpro038@gmail.com')" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 transition" title="Sao chép Email">
+                        <i class="fa-solid fa-copy"></i>
+                    </button>
+                </div>
+
+                <!-- Facebook Contact Card -->
+                <a href="https://www.facebook.com/lnk310811" target="_blank" rel="noopener noreferrer" class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-blue-500/40 transition flex items-center justify-between group">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-lg">
+                            <i class="fa-brands fa-facebook"></i>
+                        </div>
+                        <div>
+                            <div class="text-xs font-mono text-slate-400">FACEBOOK</div>
+                            <div class="text-xs sm:text-sm font-bold text-slate-200 group-hover:text-blue-400 transition">Lê Nguyên Khang (Dory)</div>
+                        </div>
+                    </div>
+                    <div class="p-2 rounded-lg bg-slate-800 group-hover:bg-blue-600 text-slate-300 group-hover:text-white transition">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center py-6 border-t border-slate-800/60 text-xs font-mono text-slate-500 space-y-1">
+            <p>© 2026 Lê Nguyên Khang (Dory) • Lớp 10 Lý 2 — THPT Chuyên Lê Quý Đôn, BR-VT</p>
+            <p class="text-slate-600">Built with Physics Mindset & Interactive Firefly Swarm</p>
+        </footer>
+    </div>
+
+    <!-- TOAST NOTIFICATION HUD -->
+    <div id="toast" class="fixed top-6 right-6 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 bg-cyan-950 border border-cyan-500/50 text-cyan-200 px-4 py-2.5 rounded-xl shadow-2xl font-mono text-xs flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-cyan-400"></i>
+        <span id="toastMsg">Thông báo</span>
+    </div>
+
+    <!-- CLI TERMINAL MODAL OVERLAY -->
+    <div id="terminalModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="w-full max-w-2xl glass-card rounded-2xl overflow-hidden border border-cyan-500/30 shadow-2xl">
+            <!-- Header -->
+            <div class="bg-slate-900 px-4 py-3 flex items-center justify-between border-b border-slate-800 font-mono text-xs text-slate-300">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-red-500 cursor-pointer" onclick="toggleTerminalModal()"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                    <span class="ml-2 font-bold text-cyan-400">Dory CLI Shell v2.6</span>
+                </div>
+                <button onclick="toggleTerminalModal()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+            <!-- Body Log -->
+            <div id="modalTerminalLog" class="p-4 bg-slate-950 font-mono text-xs text-slate-200 h-80 overflow-y-auto space-y-2">
+                <div class="text-cyan-400 font-bold">Chào mừng đến với Dory Terminal Shell!</div>
+                <div class="text-slate-400">Gõ 'help' để xem danh sách lệnh hỗ trợ.</div>
+            </div>
+            <!-- Input Bar -->
+            <div class="bg-slate-900 p-3 border-t border-slate-800 flex items-center gap-2 font-mono text-xs">
+                <span class="text-cyan-400">dory@shell:~$</span>
+                <input type="text" id="modalTermInput" onkeydown="handleModalTermSubmit(event)" class="w-full bg-transparent text-slate-100 focus:outline-none" placeholder="Nhập lệnh..." autofocus>
+            </div>
+        </div>
+    </div>
+
+    <!-- YOUTUBE IFRAME API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script>
+        /* ==========================================================================
+           1. FIREFLY SWARM PARTICLE CANVAS ENGINE
+           ========================================================================== */
+        const canvas = document.getElementById('fireflyCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // Firefly Color Palettes
+        const palettes = {
+            rainbow: ['#22d3ee', '#fde047', '#a78bfa', '#34d399', '#f472b6'],
+            warm: ['#fde047', '#fbbf24', '#f59e0b', '#fef08a'],
+            cyanViolet: ['#22d3ee', '#06b6d4', '#a78bfa', '#8b5cf6']
+        };
+
+        let currentPaletteKey = 'rainbow';
+        let activeColors = palettes.rainbow;
+
+        function toggleFireflyPalette() {
+            const keys = Object.keys(palettes);
+            const nextIdx = (keys.indexOf(currentPaletteKey) + 1) % keys.length;
+            currentPaletteKey = keys[nextIdx];
+            activeColors = palettes[currentPaletteKey];
+
+            const labels = {
+                rainbow: 'Đa Sắc',
+                warm: 'Đom Đóm Vàng',
+                cyanViolet: 'Điện Quang'
+            };
+
+            document.getElementById('paletteLabel').textContent = labels[currentPaletteKey];
+            showToast(`Đã đổi màu đom đóm: ${labels[currentPaletteKey]}`);
+
+            // Update existing particle colors
+            fireflies.forEach(f => {
+                f.color = activeColors[Math.floor(Math.random() * activeColors.length)];
+            });
+        }
+
+        // Particle Object
+        class Firefly {
+            constructor(x, y) {
+                this.x = x || Math.random() * width;
+                this.y = y || Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.radius = Math.random() * 2.5 + 1.2;
+                this.color = activeColors[Math.floor(Math.random() * activeColors.length)];
+                this.alpha = Math.random();
+                this.pulseSpeed = Math.random() * 0.04 + 0.01;
+                this.angle = Math.random() * Math.PI * 2;
+                this.targetX = null;
+                this.targetY = null;
+            }
+
+            update(mouseX, mouseY, targetPoint) {
+                // Sinusoidal light glow flicker
+                this.angle += this.pulseSpeed;
+                this.alpha = (Math.sin(this.angle) + 1) / 2 * 0.8 + 0.2;
+
+                // Target attraction logic (Section illumination or cursor follow)
+                let tx = targetPoint ? targetPoint.x : mouseX;
+                let ty = targetPoint ? targetPoint.y : mouseY;
+
+                if (tx !== null && ty !== null) {
+                    let dx = tx - this.x;
+                    let dy = ty - this.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 300) {
+                        let force = (300 - dist) / 300;
+                        this.vx += (dx / dist) * force * 0.15;
+                        this.vy += (dy / dist) * force * 0.15;
+                    }
+                }
+
+                // Natural organic drift & dampening
+                this.vx += (Math.random() - 0.5) * 0.2;
+                this.vy += (Math.random() - 0.5) * 0.2;
+                this.vx *= 0.96;
+                this.vy *= 0.96;
+
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Screen Wrap
+                if (this.x < -10) this.x = width + 10;
+                if (this.x > width + 10) this.x = -10;
+                if (this.y < -10) this.y = height + 10;
+                if (this.y > height + 10) this.y = -10;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 12;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const fireflies = [];
+        const numFireflies = 75;
+        for (let i = 0; i < numFireflies; i++) {
+            fireflies.push(new Firefly());
+        }
+
+        let mouseX = null;
+        let mouseY = null;
+        let currentTargetSectionPoint = null;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 0) {
+                mouseX = e.touches[0].clientX;
+                mouseY = e.touches[0].clientY;
+                // Burst extra fireflies on touch
+                for (let i = 0; i < 5; i++) {
+                    fireflies.push(new Firefly(mouseX, mouseY));
+                    if (fireflies.length > 120) fireflies.shift();
+                }
+            }
+        });
+
+        // Animation Loop
+        function animateFireflies() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw spotlight halo around cursor if on screen
+            if (mouseX !== null && mouseY !== null) {
+                let grad = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 180);
+                grad.addColorStop(0, 'rgba(34, 211, 238, 0.06)');
+                grad.addColorStop(1, 'transparent');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, width, height);
+            }
+
+            fireflies.forEach(f => {
+                f.update(mouseX, mouseY, currentTargetSectionPoint);
+                f.draw();
+            });
+
+            requestAnimationFrame(animateFireflies);
+        }
+        animateFireflies();
+
+        // Swarm Rebuild Cinematic Trigger
+        function triggerSwarmRebuild() {
+            // Spawn extra particles converging onto screen center
+            const centerX = width / 2;
+            const centerY = height / 2;
+            
+            for (let i = 0; i < 40; i++) {
+                let f = new Firefly(
+                    centerX + (Math.random() - 0.5) * 400,
+                    centerY + (Math.random() - 0.5) * 400
+                );
+                f.vx = (Math.random() - 0.5) * 8;
+                f.vy = (Math.random() - 0.5) * 8;
+                fireflies.push(f);
+            }
+
+            if (fireflies.length > 140) {
+                fireflies.splice(0, fireflies.length - 140);
+            }
+
+            document.getElementById('swarmStatusText').textContent = `FIREFLY SWARM :: REBUILT • ${fireflies.length} agents`;
+            showToast(`✦ Swarm Rebuilt! Đã nạp ${fireflies.length} đom đóm.`);
+        }
+
+        /* ==========================================================================
+           2. SECTION INTERSECTION ILLUMINATION OBSERVER
+           ========================================================================== */
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const rect = entry.target.getBoundingClientRect();
+                    currentTargetSectionPoint = {
+                        x: rect.left + rect.width / 2,
+                        y: rect.top + rect.height / 2
+                    };
+                    entry.target.classList.add('section-illuminated');
+                    setTimeout(() => entry.target.classList.remove('section-illuminated'), 1200);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        sections.forEach(sec => observer.observe(sec));
+
+
+        /* ==========================================================================
+           3. YOUTUBE IFRAME PLAYER MUSIC SYNC (Tấm Lòng Cửu Long)
+           ========================================================================== */
+        let player;
+        let isPlaying = false;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('ytAudioPlayer', {
+                height: '0',
+                width: '0',
+                videoId: 'dcXw-Spt3z0',
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'dcXw-Spt3z0'
+                },
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function togglePlayMusic() {
+            if (!player || typeof player.playVideo !== 'function') {
+                showToast("Đang tải dữ liệu âm thanh từ YouTube...");
+                return;
+            }
+
+            const vinylDisc = document.getElementById('vinylDisc');
+            const tonearm = document.getElementById('tonearm');
+            const playIcon = document.getElementById('playIcon');
+            const statusText = document.getElementById('musicStatusText');
+            const eq = document.getElementById('equalizer');
+
+            if (!isPlaying) {
+                player.playVideo();
+                isPlaying = true;
+                vinylDisc.classList.remove('vinyl-paused');
+                tonearm.classList.add('tonearm-playing');
+                playIcon.className = "fa-solid fa-pause";
+                statusText.textContent = "Đang phát: Tấm Lòng Cửu Long (Ricky Star)";
+                eq.style.opacity = "1";
+                showToast("▶ Đang phát nhạc!");
+            } else {
+                player.pauseVideo();
+                isPlaying = false;
+                vinylDisc.classList.add('vinyl-paused');
+                tonearm.classList.remove('tonearm-playing');
+                playIcon.className = "fa-solid fa-play ml-0.5";
+                statusText.textContent = "Tạm dừng phát nhạc";
+                eq.style.opacity = "0.4";
+                showToast("⏸ Tạm dừng nhạc.");
+            }
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                player.playVideo();
+            }
+        }
+
+
+        /* ==========================================================================
+           4. RUBIK 3x3 SCRAMBLER & TIMER SYSTEM
+           ========================================================================== */
+        const moves = ["R", "L", "U", "D", "F", "B"];
+        const modifiers = ["", "'", "2"];
+
+        function generateNewScramble() {
+            let scramble = [];
+            let lastMove = "";
+
+            for (let i = 0; i < 20; i++) {
+                let availableMoves = moves.filter(m => m !== lastMove);
+                let move = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+                let mod = modifiers[Math.floor(Math.random() * modifiers.length)];
+                scramble.push(move + mod);
+                lastMove = move;
+            }
+
+            document.getElementById('scrambleDisplay').textContent = scramble.join(" ");
+        }
+
+        let timerInterval = null;
+        let timerRunning = false;
+        let startTime = 0;
+
+        function toggleTimer() {
+            if (!timerRunning) {
+                startTime = Date.now();
+                timerRunning = true;
+                document.getElementById('timerBtnText').textContent = "Dừng Timer";
+                timerInterval = setInterval(() => {
+                    let elapsed = (Date.now() - startTime) / 1000;
+                    document.getElementById('timerDisplay').textContent = elapsed.toFixed(2) + "s";
+                }, 10);
+            } else {
+                clearInterval(timerInterval);
+                timerRunning = false;
+                document.getElementById('timerBtnText').textContent = "Start / Stop (Bấm cách)";
+                showToast(`Kết quả Rubik: ${document.getElementById('timerDisplay').textContent}`);
+                generateNewScramble();
+            }
+        }
+
+        // Spacebar trigger for Rubik timer
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                toggleTimer();
+            }
+        });
+
+
+        /* ==========================================================================
+           5. INTERACTIVE TERMINAL ENGINE
+           ========================================================================== */
+        function runCommand(cmd) {
+            const output = document.getElementById('inlineTerminalOutput');
+            output.classList.remove('hidden');
+
+            let res = "";
+            switch (cmd.toLowerCase()) {
+                case 'neofetch':
+                    res = `
+  /\_/\   OS: DoryOS v2.6 x86_64
+ ( o.o )  HOST: THPT Chuyên Lê Quý Đôn (Lớp 10 Lý 2)
+  > ^ <   KERNEL: Physics & Microchip Architecture
+          SHELL: zsh / bash
+          TARGET: Vi mạch Bán dẫn @ ĐH Bách Khoa TP.HCM
+          HOBBIES: Rubik 3x3 (PLL), Cyber Swarm, Music
+                    `;
+                    break;
+                case 'rubik':
+                    generateNewScramble();
+                    res = `[RUBIK 3x3] Đã khởi tạo Scramble mới! Kiểm tra thẻ Dual Core.`;
+                    break;
+                case 'music':
+                    togglePlayMusic();
+                    res = `[MUSIC] Đã chuyển đổi trạng thái phát nhạc.`;
+                    break;
+                case 'swarm':
+                    triggerSwarmRebuild();
+                    res = `[SWARM] Sparking ${fireflies.length} đom đóm năng lượng.`;
+                    break;
+                case 'contact':
+                    res = `[CONTACT]\nEmail: khangpro038@gmail.com\nFacebook: https://www.facebook.com/lnk310811`;
+                    break;
+                case 'help':
+                    res = `Danh sách lệnh khả dụng: neofetch, rubik, music, swarm, contact, clear`;
+                    break;
+                case 'clear':
+                    output.classList.add('hidden');
+                    return;
+                default:
+                    res = `Lệnh không hợp lệ: '${cmd}'. Gõ 'help' để xem hướng dẫn.`;
+            }
+
+            output.textContent = res.trim();
+        }
+
+        // Modal Terminal Controls
+        function toggleTerminalModal() {
+            const modal = document.getElementById('terminalModal');
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+        }
+
+        function handleModalTermSubmit(e) {
+            if (e.key === 'Enter') {
+                const input = document.getElementById('modalTermInput');
+                const val = input.value.trim();
+                if (!val) return;
+
+                const log = document.getElementById('modalTerminalLog');
+                const line = document.createElement('div');
+                line.innerHTML = `<span class="text-cyan-400">dory@shell:~$</span> <span class="text-white">${val}</span>`;
+                log.appendChild(line);
+
+                let reply = document.createElement('div');
+                reply.className = 'text-emerald-400 ml-4 mb-2';
+
+                switch (val.toLowerCase()) {
+                    case 'help':
+                        reply.textContent = "Lệnh: neofetch, rubik, music, swarm, contact, clear";
+                        break;
+                    case 'neofetch':
+                        reply.textContent = "Lê Nguyên Khang (Dory) | Lớp 10 Lý 2 | THPT Chuyên Lê Quý Đôn BR-VT";
+                        break;
+                    case 'music':
+                        togglePlayMusic();
+                        reply.textContent = "Toggle music playback...";
+                        break;
+                    case 'swarm':
+                        triggerSwarmRebuild();
+                        reply.textContent = "Swarm rebuilt!";
+                        break;
+                    case 'clear':
+                        log.innerHTML = "";
+                        input.value = "";
+                        return;
+                    default:
+                        reply.textContent = `Command not found: ${val}. Try 'help'.`;
+                }
+
+                log.appendChild(reply);
+                log.scrollTop = log.scrollHeight;
+                input.value = "";
+            }
+        }
+
+
+        /* ==========================================================================
+           6. UTILITIES (Toast, Copy, Custom Avatar Reader)
+           ========================================================================== */
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-[-100px]', 'opacity-0');
+            }, 3000);
+        }
+
+        function copyToClipboard(text) {
+            const temp = document.createElement('input');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(`Đã sao chép: ${text}`);
+        }
+
+        // Avatar Fallback SVG Monogram Generator
+        function handleAvatarError(img) {
+            img.onerror = null;
+            img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23091322"/><circle cx="100" cy="100" r="70" fill="none" stroke="%2322d3ee" stroke-width="4"/><text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle" fill="%2322d3ee" font-family="monospace" font-size="70" font-weight="bold">D</text></svg>';
+        }
+
+        // Custom Avatar Upload & LocalStorage Persistence
+        function loadCustomAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const avatarImg = document.getElementById('avatarImage');
+                    avatarImg.src = e.target.result;
+                    try {
+                        localStorage.setItem('dory_avatar', e.target.result);
+                    } catch (err) {
+                        console.warn("Storage quota exceeded for local image caching.");
+                    }
+                    showToast("Đã cập nhật ảnh đại diện!");
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Load cached avatar if present
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedAvatar = localStorage.getItem('dory_avatar');
+            if (savedAvatar) {
+                document.getElementById('avatarImage').src = savedAvatar;
+            }
+        });
+    </script>
+</body>
+</html>
